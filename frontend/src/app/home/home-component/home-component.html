@@ -27,9 +27,9 @@
                 </mat-expansion-panel-header>
 
                 <!-- TOPIC ITEMS -->
-                <button mat-button class="topic-item" *ngFor="let item of items | keyvalue">
-                    <mat-icon>{{item.key.toString()}}</mat-icon>
-                    {{ item.value }}
+                <button mat-button class="topic-item" *ngFor="let item of categories">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    {{ item.name }}
                 </button>
             </mat-expansion-panel>
 
@@ -37,7 +37,7 @@
 
         <!-- FOOTER -->
         <div class="sidebar-footer">
-            <button mat-raised-button color="primary" class="new-topic-btn">
+            <button mat-raised-button color="primary" class="new-topic-btn" (click)="showNewThreadMenu()">
                 <mat-icon>add</mat-icon>
                 Start new discussion
             </button>
@@ -48,28 +48,22 @@
     <!-- MAIN CONTENT -->
     <main class="content">
 
-        <mat-card class="topic-card" *ngFor="let topic of [1,2,3,4]">
+        <mat-card class="topic-card" *ngFor="let thread of threads">
             <div class="topic-header">
 
                 <div>
-                    <h3>How to learn Angular properly?</h3>
                     <span class="meta">
-                        by <strong>admin</strong> • 12.01.2026
+                        by <strong>{{thread.username}}</strong> • {{ thread.createdAt | date:'dd.MM.yyyy'}} • {{thread.category}}
                     </span>
+                    <h3>{{thread.title}}</h3>
                 </div>
 
                 <div class="topic-stats">
                     <mat-icon>chat</mat-icon>
-                    <span>14</span>
+                    <span>{{thread.postsCount}}</span>
                 </div>
 
             </div>
-
-            <mat-divider></mat-divider>
-
-            <p class="topic-preview">
-                I'm struggling with Angular architecture and best practices...
-            </p>
         </mat-card>
 
     </main>
@@ -90,29 +84,31 @@
     </mat-menu>
 </div>
 
-<div class="overlay" *ngIf="isNewDiscussion">
-  <div class="new-thread-menu">
+<div class="overlay" *ngIf="isNewThread">
+    <div class="new-thread-menu">
 
-    <h2>Start a new discussion</h2>
+        <h2>Start a new discussion</h2>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Thread title</mat-label>
-      <input matInput placeholder="Enter thread title">
-    </mat-form-field>
+        <form [formGroup]="newThreadForm" (ngSubmit)="newThread()">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Thread title</mat-label>
+                <input matInput formControlName="thread" placeholder="Enter thread title">
+            </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Post</mat-label>
-      <textarea matInput rows="5" placeholder="Write your post..."></textarea>
-    </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>First post</mat-label>
+                <textarea matInput formControlName="post" rows="5" placeholder="Write your post..."></textarea>
+            </mat-form-field>
+        </form>
 
-    <div class="actions">
-      <button mat-button (click)="isNewDiscussion = false">
-        Cancel
-      </button>
-      <button mat-raised-button color="primary">
-        Create
-      </button>
+        <div class="actions">
+            <button mat-button (click)="showNewThreadMenu()">
+                Cancel
+            </button>
+            <button mat-raised-button color="primary" (click)="newThread()">
+    Create
+</button>
+        </div>
+
     </div>
-
-  </div>
 </div>

@@ -41,7 +41,7 @@ const login = async (req, res) => {
         }
 
         const result = await pool.query(
-            `SELECT password_hash FROM users WHERE username = $1`,
+            `SELECT id, password_hash FROM users WHERE username = $1`,
             [username]
         );
 
@@ -58,10 +58,11 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId, username },
+            { id: userId, username },
             JWT_SECRET,
-            { expiresIn: '12h' }
+            { expiresIn: '24h' }
         );
+
 
         return res.status(200).json({
             message: "Login successful!",
