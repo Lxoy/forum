@@ -12,11 +12,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './auth/login-component/login-component';
+import { HomeComponent } from './home/home-component/home-component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
     App,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +37,11 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatListModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
