@@ -1,0 +1,97 @@
+<aside class="sidebar">
+
+  <!-- HEADER -->
+  <div class="sidebar-header">
+    <h2>YapYap</h2>
+  </div>
+
+  <!-- NAV -->
+  <nav class="sidebar-nav">
+
+    <!-- POPULAR -->
+    <button
+      mat-button
+      class="nav-item"
+      [class.active]="!selectedCategory"
+      (click)="clearCategory.emit()"
+    >
+      <mat-icon>local_fire_department</mat-icon>
+      Popular
+    </button>
+
+    <!-- EXPLORE -->
+    <button
+      mat-button
+      class="nav-item"
+      [class.active]="!selectedCategory"
+      (click)="clearCategory.emit()"
+    >
+      <mat-icon>explore</mat-icon>
+      Explore
+    </button>
+
+    <!-- DIVIDER -->
+    <mat-divider></mat-divider>
+
+    <!-- TOPICS -->
+    <mat-expansion-panel expanded class="topics-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="panel-title">
+          <mat-icon>forum</mat-icon>
+          Topics
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <button
+        mat-button
+        class="topic-item"
+        *ngFor="let item of categories"
+        (click)="selectCategory.emit(item.name)"
+        [class.active]="selectedCategory === item.name"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.name }}
+      </button>
+    </mat-expansion-panel>
+
+    <!-- DIVIDER -->
+    <mat-divider></mat-divider>
+
+    <!-- ABOUT YAPYAP -->
+    <button
+      mat-button
+      class="nav-item"
+      [class.active]="!selectedCategory"
+      (click)="clearCategory.emit()"
+    >
+      <mat-icon>info</mat-icon>
+      About YapYap
+    </button>
+
+    <!-- RULES -->
+    <button
+      mat-button
+      class="nav-item"
+      [class.active]="!selectedCategory"
+      (click)="clearCategory.emit()"
+    >
+      <mat-icon>list_alt_check</mat-icon>
+      Rules
+    </button>
+
+  </nav>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+    <button
+      mat-raised-button
+      color="primary"
+      class="new-topic-btn"
+      (click)="newThread.emit()"
+    >
+      <mat-icon>add</mat-icon>
+      Start new discussion
+    </button>
+  </div>
+
+</aside>

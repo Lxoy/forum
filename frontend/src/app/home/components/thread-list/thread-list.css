@@ -1,0 +1,36 @@
+.topic-card {
+  margin-bottom: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.topic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta {
+  font-size: 13px;
+  color: #777;
+}
+
+.topic-header h3 {
+  margin: 6px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.topic-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #3f51b5;
+  font-weight: 600;
+}

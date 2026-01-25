@@ -1,0 +1,52 @@
+<div class="overlay" (click)="close.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <h2>Start a new discussion</h2>
+      <p>Share your thoughts with the community</p>
+    </div>
+
+    <!-- FORM -->
+    <form class="modal-body" [formGroup]="form">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Thread title</mat-label>
+        <input matInput formControlName="thread">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let c of categories" [value]="c.id">
+            {{ c.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Post</mat-label>
+        <textarea
+          matInput
+          rows="4"
+          formControlName="post"
+          placeholder="Write your post...">
+        </textarea>
+      </mat-form-field>
+
+    </form>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+      <button mat-button (click)="close.emit()">Cancel</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submit.emit()"
+        [disabled]="form.invalid">
+        Create
+      </button>
+    </div>
+
+  </div>
+</div>

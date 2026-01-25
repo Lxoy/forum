@@ -32,6 +32,11 @@ export class HomeComponent implements OnInit {
   isNewThread: boolean = false
   categories: Category[] = [];
   threads: Thread[] = [];
+  selectedCategory: string | null = null;
+  Math = Math;
+
+  currentPage = 1;
+  pageSize = 5;
 
 
   constructor(
@@ -41,7 +46,8 @@ export class HomeComponent implements OnInit {
   ) {
     this.newThreadForm = this.fb.group({
       thread: ['', Validators.required],
-      post: ['', [Validators.required]]
+      category: ['', Validators.required],
+      post: ['', Validators.required]
     });
   }
 
@@ -89,48 +95,74 @@ export class HomeComponent implements OnInit {
   }
 
   newThread(): void {
-  if (this.newThreadForm.invalid) return;
+    if (this.newThreadForm.invalid) return;
 
-  const token = this.authService.getToken();
+    const token = this.authService.getToken();
 
-  const threadPayload = {
-    title: this.newThreadForm.value.thread,
-    categoryId: 1 // ⬅️ zasad hardcode
-  };
+    const threadPayload = {
+      title: this.newThreadForm.value.thread,
+      categoryId: this.newThreadForm.value.category
+    };
 
-  this.http.post<{ threadId: number }>(
-    'http://localhost:3000/api/home/thread',
-    threadPayload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  ).subscribe({
-    next: (res) => {
-      const postPayload = {
-        content: this.newThreadForm.value.post,
-        threadId: res.threadId
-      };
-
-      this.http.post(
-        'http://localhost:3000/api/home/post',
-        postPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+    this.http.post<{ threadId: number }>(
+      'http://localhost:3000/api/home/thread',
+      threadPayload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      ).subscribe({
-        next: () => {
-          this.isNewThread = false;
-          this.newThreadForm.reset();
-          this.loadThreads();
-        },
-        error: err => console.error('Post error', err)
-      });
-    },
-    error: err => console.error('Thread error', err)
-  });
-}
+      }
+    ).subscribe({
+      next: (res) => {
+        const postPayload = {
+          content: this.newThreadForm.value.post,
+          threadId: res.threadId
+        };
+
+        this.http.post(
+          'http://localhost:3000/api/home/post',
+          postPayload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        ).subscribe({
+          next: () => {
+            this.isNewThread = false;
+            this.newThreadForm.reset();
+            this.loadThreads();
+          },
+          error: err => console.error('Post error', err)
+        });
+      },
+      error: err => console.error('Thread error', err)
+    });
+  }
+
+   selectCategory(category: string | null): void {
+    this.selectedCategory =
+      this.selectedCategory === category ? null : category;
+
+    this.currentPage = 1; // reset page
+  }
+
+  clearCategory(): void {
+    this.selectedCategory = null;
+    this.currentPage = 1;
+  }
+
+  goToPage(page: number): void {
+    this.currentPage = page;
+  }
+
+  nextPage(): void {
+    this.currentPage++;
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
 }

@@ -1,0 +1,13 @@
+.pagination {
+  margin-top: auto;
+  padding: 24px 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+button.active {
+  background: rgba(63, 81, 181, 0.15);
+  color: #3f51b5;
+  font-weight: 600;
+}
