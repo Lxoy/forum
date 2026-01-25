@@ -18,13 +18,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
-import { CategoryFilterPipe } from './home/category-filter-pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { PaginatePipe } from './home/paginate-pipe';
 import { ThreadList } from './home/components/thread-list/thread-list';
 import { Sidebar } from './home/components/sidebar/sidebar';
 import { Pagination } from './home/components/pagination/pagination';
 import { NewDiscussionMenu } from './home/components/new-discussion-menu/new-discussion-menu';
+import { Thread } from './home/pages/thread/thread';
+import { ThreadFeed } from './home/pages/thread-feed/thread-feed';
+import { NotFound } from './home/pages/not-found/not-found';
 
 @NgModule({
   declarations: [
@@ -32,12 +34,14 @@ import { NewDiscussionMenu } from './home/components/new-discussion-menu/new-dis
     RegisterComponent,
     LoginComponent,
     HomeComponent,
-    CategoryFilterPipe,
     PaginatePipe,
     ThreadList,
     Sidebar,
     Pagination,
     NewDiscussionMenu,
+    Thread,
+    ThreadFeed,
+    NotFound,
   ],
   imports: [
     BrowserModule,

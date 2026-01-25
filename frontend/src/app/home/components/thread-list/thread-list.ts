@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Thread } from '../../home-component/home-component';
+import { Thread } from '../../model/thread.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thread-list',
@@ -12,6 +13,12 @@ export class ThreadList {
   @Input() selectedCategory: string | null = null;
   @Input() currentPage = 1;
   @Input() pageSize = 10;
+
+  constructor(private router: Router) { }
+
+  openThread(id: number) {
+    this.router.navigate(['/thread', id]);
+  }
 
   get filteredThreads(): Thread[] {
     if (!this.selectedCategory) {

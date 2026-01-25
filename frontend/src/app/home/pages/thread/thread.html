@@ -1,0 +1,31 @@
+<div class="thread-page">
+
+  <!-- HEADER -->
+  <header class="thread-header">
+    <h1 class="thread-title">
+      Thread title goes here
+    </h1>
+
+    <div class="thread-meta">
+      <span>by John Doe</span>
+      <span>•</span>
+      <span>12.03.2025</span>
+      <span class="category">Angular</span>
+    </div>
+  </header>
+
+  <!-- POSTS -->
+  <section class="posts">
+    <div class="post" *ngFor="let post of posts">
+      <div class="post-author">
+        <mat-icon>account_circle</mat-icon>
+        <span>{{ post.author }}</span>
+      </div>
+
+      <div class="post-content">
+        {{ post.content }}
+      </div>
+    </div>
+  </section>
+
+</div>

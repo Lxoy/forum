@@ -9,23 +9,13 @@
   <nav class="sidebar-nav">
 
     <!-- POPULAR -->
-    <button
-      mat-button
-      class="nav-item"
-      [class.active]="!selectedCategory"
-      (click)="clearCategory.emit()"
-    >
+    <button mat-button class="nav-item" routerLink="popular" routerLinkActive="active">
       <mat-icon>local_fire_department</mat-icon>
       Popular
     </button>
 
     <!-- EXPLORE -->
-    <button
-      mat-button
-      class="nav-item"
-      [class.active]="!selectedCategory"
-      (click)="clearCategory.emit()"
-    >
+    <button mat-button class="nav-item" routerLink="explore" routerLinkActive="active">
       <mat-icon>explore</mat-icon>
       Explore
     </button>
@@ -42,13 +32,8 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <button
-        mat-button
-        class="topic-item"
-        *ngFor="let item of categories"
-        (click)="selectCategory.emit(item.name)"
-        [class.active]="selectedCategory === item.name"
-      >
+      <button mat-button class="topic-item" *ngFor="let item of categories" (click)="selectCategory.emit(item.name)"
+        [class.active]="selectedCategory === item.name">
         <mat-icon>{{ item.icon }}</mat-icon>
         {{ item.name }}
       </button>
@@ -58,23 +43,15 @@
     <mat-divider></mat-divider>
 
     <!-- ABOUT YAPYAP -->
-    <button
-      mat-button
-      class="nav-item"
-      [class.active]="!selectedCategory"
-      (click)="clearCategory.emit()"
-    >
+    <button mat-button class="nav-item" [class.active]="selectedCategory === 'about'"
+      (click)="selectCategory.emit('about')">
       <mat-icon>info</mat-icon>
       About YapYap
     </button>
 
     <!-- RULES -->
-    <button
-      mat-button
-      class="nav-item"
-      [class.active]="!selectedCategory"
-      (click)="clearCategory.emit()"
-    >
+    <button mat-button class="nav-item" [class.active]="selectedCategory === 'rules'"
+      (click)="selectCategory.emit('rules')">
       <mat-icon>list_alt_check</mat-icon>
       Rules
     </button>
@@ -83,12 +60,7 @@
 
   <!-- FOOTER -->
   <div class="sidebar-footer">
-    <button
-      mat-raised-button
-      color="primary"
-      class="new-topic-btn"
-      (click)="newThread.emit()"
-    >
+    <button mat-raised-button color="primary" class="new-topic-btn" (click)="newThread.emit()">
       <mat-icon>add</mat-icon>
       Start new discussion
     </button>

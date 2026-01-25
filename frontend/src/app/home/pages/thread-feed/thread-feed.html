@@ -1,0 +1,15 @@
+<section class="thread-feed">
+
+  <app-thread-list
+    [threads]="paginatedThreads">
+  </app-thread-list>
+
+  <app-pagination
+    *ngIf="threads.length > pageSize"
+    [totalItems]="threads.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+
+</section>

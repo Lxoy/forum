@@ -3,23 +3,10 @@ import { AuthService } from '../../auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
-
-export interface Category {
-  id: number;
-  name: string;
-  icon: string;
-}
-
-export interface Thread {
-  id: number;
-  title: string;
-  userId: number;
-  username: string;
-  categoryId: number;
-  category: string;
-  createdAt: Date;
-  postsCount: number;
-}
+import { ThreadService } from '../services/thread.service';
+import { Category } from '../model/category.model';
+import { Thread } from '../model/thread.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home-component',
@@ -29,140 +16,51 @@ export interface Thread {
 })
 export class HomeComponent implements OnInit {
   newThreadForm: FormGroup;
-  isNewThread: boolean = false
+  isNewThread = false;
   categories: Category[] = [];
-  threads: Thread[] = [];
-  selectedCategory: string | null = null;
-  Math = Math;
-
-  currentPage = 1;
-  pageSize = 5;
-
 
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private threadService: ThreadService,
+    private route: ActivatedRoute,
   ) {
     this.newThreadForm = this.fb.group({
       thread: ['', Validators.required],
       category: ['', Validators.required],
-      post: ['', Validators.required]
+      post: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.http
-      .get<Category[]>('http://localhost:3000/api/home/categories')
-      .subscribe({
-        next: (data) => (this.categories = data),
-        error: (err) => console.error(err),
-      });
-
-    this.loadThreads();
-
+    this.loadCategories();
+    this.handleRoute();
   }
 
-  loadThreads(): void {
-    this.http
-      .get<any[]>('http://localhost:3000/api/home/thread')
-      .pipe(
-        map(data =>
-          data.map(t => ({
-            id: t.id,
-            title: t.title,
-            userId: t.user_id,
-            username: t.username,
-            categoryId: t.category_id,
-            category: t.category,
-            createdAt: new Date(t.created_at),
-            postsCount: t.posts_count
-          }))
-        )
-      )
-      .subscribe({
-        next: (threads: Thread[]) => (this.threads = threads),
-        error: (err) => console.error(err)
-      });
+  private loadCategories() {
+    this.http.get<Category[]>('http://localhost:3000/api/home/categories')
+      .subscribe(c => this.categories = c);
   }
 
-  showNewThreadMenu(): void {
-    this.isNewThread = !this.isNewThread;
-  }
+  private handleRoute() {
+    this.route.url.subscribe(() => {
+      const path = this.route.firstChild?.snapshot.routeConfig?.path;
 
-  signOut(): void {
-    this.authService.logout();
-  }
-
-  newThread(): void {
-    if (this.newThreadForm.invalid) return;
-
-    const token = this.authService.getToken();
-
-    const threadPayload = {
-      title: this.newThreadForm.value.thread,
-      categoryId: this.newThreadForm.value.category
-    };
-
-    this.http.post<{ threadId: number }>(
-      'http://localhost:3000/api/home/thread',
-      threadPayload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      if (path === 'popular') {
+        this.threadService.fetchPopular();
+      } else {
+        this.threadService.fetchExplore();
       }
-    ).subscribe({
-      next: (res) => {
-        const postPayload = {
-          content: this.newThreadForm.value.post,
-          threadId: res.threadId
-        };
-
-        this.http.post(
-          'http://localhost:3000/api/home/post',
-          postPayload,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        ).subscribe({
-          next: () => {
-            this.isNewThread = false;
-            this.newThreadForm.reset();
-            this.loadThreads();
-          },
-          error: err => console.error('Post error', err)
-        });
-      },
-      error: err => console.error('Thread error', err)
     });
   }
 
-   selectCategory(category: string | null): void {
-    this.selectedCategory =
-      this.selectedCategory === category ? null : category;
-
-    this.currentPage = 1; // reset page
+  showNewThreadMenu() {
+    this.isNewThread = !this.isNewThread;
   }
 
-  clearCategory(): void {
-    this.selectedCategory = null;
-    this.currentPage = 1;
+  signOut() {
+    this.authService.logout();
   }
 
-  goToPage(page: number): void {
-    this.currentPage = page;
-  }
-
-  nextPage(): void {
-    this.currentPage++;
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
 }

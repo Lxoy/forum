@@ -1,42 +1,33 @@
 <div class="layout">
 
-    <app-sidebar [categories]="categories" [selectedCategory]="selectedCategory"
-        (selectCategory)="selectCategory($event)" (clearCategory)="clearCategory()" (newThread)="showNewThreadMenu()">
-    </app-sidebar>
+  <app-sidebar
+    [categories]="categories"
+    (newThread)="showNewThreadMenu()">
+  </app-sidebar>
 
-    <!-- MAIN CONTENT -->
-    <main class="content">
-
-        <!-- THREAD LIST-->
-        <app-thread-list [threads]="threads" [selectedCategory]="selectedCategory" [currentPage]="currentPage"
-            [pageSize]="pageSize">
-        </app-thread-list>
-
-        <!-- PAGINATION -->
-        <app-pagination *ngIf="(threads | categoryFilter:selectedCategory).length > pageSize"
-            [totalItems]="(threads | categoryFilter:selectedCategory).length" [pageSize]="pageSize"
-            [currentPage]="currentPage" (pageChange)="goToPage($event)">
-        </app-pagination>
-    </main>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
 
 </div>
-
 
 <!-- USER MENU -->
 <div class="user-menu">
-    <button mat-fab color="primary" [matMenuTriggerFor]="logoutMenu">
-        <mat-icon>person</mat-icon>
-    </button>
+  <button mat-fab color="primary" [matMenuTriggerFor]="logoutMenu">
+    <mat-icon>person</mat-icon>
+  </button>
 
-    <mat-menu #logoutMenu="matMenu">
-        <button mat-menu-item (click)="signOut()">
-            <mat-icon>logout</mat-icon>
-            <span>Log out</span>
-        </button>
-    </mat-menu>
+  <mat-menu #logoutMenu="matMenu">
+    <button mat-menu-item (click)="signOut()">
+      <mat-icon>logout</mat-icon>
+      <span>Log out</span>
+    </button>
+  </mat-menu>
 </div>
 
-<app-new-discussion-menu *ngIf="isNewThread" [form]="newThreadForm"
+<app-new-discussion-menu
+  *ngIf="isNewThread"
+  [form]="newThreadForm"
   [categories]="categories"
-  (close)="showNewThreadMenu()"
-  (submit)="newThread()"></app-new-discussion-menu>
+  (close)="showNewThreadMenu()">
+</app-new-discussion-menu>

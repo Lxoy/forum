@@ -37,7 +37,7 @@ export class LoginComponent {
           this.hidePassword = true;
 
           this.authService.saveToken(response.token);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         },
         error: err => {
           alert(err.error.message);

@@ -46,7 +46,33 @@ const createThread = async (req, res) => {
     }
 }
 
+const getPopularThreads = async (req, res) => {
+    try {
+        const { rows } = await pool.query(
+            `WITH cte AS (
+            SELECT p.thread_id, COUNT(p.id) as posts_count
+            FROM posts p
+            GROUP BY(p.thread_id)
+            )
+
+            SELECT t.id, t.title, t.category_id, c.name AS category, t.user_id, u.username, t.created_at, cte.posts_count
+            from threads t 
+            JOIN users u ON u.id = t.user_id 
+            JOIN categories c ON c.id = t.category_id
+            JOIN cte ON cte.thread_id = t.id
+            ORDER BY posts_count DESC`
+        );
+
+        res.status(200).json(rows);
+    }
+    catch (error) {
+        console.error("Error fetching popular threads: ", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+}
+
 module.exports = {
     getAllThreads,
-    createThread
+    createThread,
+    getPopularThreads
 };

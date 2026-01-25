@@ -1,5 +1,6 @@
 <mat-card
   class="topic-card"
+  (click)="openThread(thread.id)"
   *ngFor="let thread of paginatedThreads">
 
   <div class="topic-header">

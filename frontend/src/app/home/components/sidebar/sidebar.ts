@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Category } from '../../home-component/home-component';
+import { Category } from '../../model/category.model';
 
 @Component({
   selector: 'app-sidebar',
