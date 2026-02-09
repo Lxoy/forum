@@ -1,24 +1,36 @@
-<div class="pagination">
+<div class="pagination" *ngIf="totalPages > 1">
 
-  <button mat-button
-          (click)="prev()"
-          [disabled]="currentPage === 1">
-    <mat-icon>arrow_left</mat-icon>
-    Prev
+  <!-- PREV -->
+  <button
+    mat-icon-button
+    class="nav-btn"
+    (click)="prev()"
+    [disabled]="currentPage === 1">
+
+    <mat-icon>chevron_left</mat-icon>
   </button>
 
-  <button mat-button
-          *ngFor="let page of pages()"
-          (click)="goTo(page)"
-          [class.active]="currentPage === page">
-    {{ page }}
-  </button>
+  <!-- PAGE NUMBERS -->
+  <div class="page-numbers">
+    <button
+      mat-button
+      class="page-btn"
+      *ngFor="let page of visiblePages"
+      (click)="goTo(page)"
+      [class.active]="currentPage === page">
 
-  <button mat-button
-          (click)="next()"
-          [disabled]="currentPage === totalPages">
-    Next
-    <mat-icon>arrow_right</mat-icon>
+      {{ page }}
+    </button>
+  </div>
+
+  <!-- NEXT -->
+  <button
+    mat-icon-button
+    class="nav-btn"
+    (click)="next()"
+    [disabled]="currentPage === totalPages">
+
+    <mat-icon>chevron_right</mat-icon>
   </button>
 
 </div>

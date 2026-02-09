@@ -2,58 +2,64 @@
 
   <!-- HEADER -->
   <div class="sidebar-header">
-    <h2>YapYap</h2>
+    <h2 class="logo">YapYap</h2>
   </div>
 
   <!-- NAV -->
   <nav class="sidebar-nav">
 
-    <!-- POPULAR -->
     <button mat-button class="nav-item" routerLink="popular" routerLinkActive="active">
       <mat-icon>local_fire_department</mat-icon>
-      Popular
+      Trending
     </button>
 
-    <!-- EXPLORE -->
     <button mat-button class="nav-item" routerLink="explore" routerLinkActive="active">
-      <mat-icon>explore</mat-icon>
-      Explore
+      <mat-icon>travel_explore</mat-icon>
+      Discover
     </button>
 
-    <!-- DIVIDER -->
     <mat-divider></mat-divider>
 
     <!-- TOPICS -->
-    <mat-expansion-panel expanded class="topics-panel">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="panel-title">
+    <div class="topics-section">
+
+      <button class="topics-toggle" (click)="toggleTopics()">
+        <span>
           <mat-icon>forum</mat-icon>
-          Topics
-        </mat-panel-title>
-      </mat-expansion-panel-header>
+          Yap Topics
+        </span>
 
-      <button mat-button class="topic-item" *ngFor="let item of categories" (click)="selectCategory.emit(item.name)"
-        [class.active]="selectedCategory === item.name">
-        <mat-icon>{{ item.icon }}</mat-icon>
-        {{ item.name }}
+        <mat-icon class="chevron" [class.rotated]="topicsOpen">
+          expand_more
+        </mat-icon>
       </button>
-    </mat-expansion-panel>
 
-    <!-- DIVIDER -->
+      <div class="topics-list" *ngIf="topicsOpen">
+        <button mat-button class="topic-item" *ngFor="let item of categories" [routerLink]="['/category', item.id]"
+          routerLinkActive="active">
+
+          <mat-icon>{{ item.icon }}</mat-icon>
+          {{ item.name }}
+        </button>
+      </div>
+
+    </div>
+
     <mat-divider></mat-divider>
 
-    <!-- ABOUT YAPYAP -->
-    <button mat-button class="nav-item" [class.active]="selectedCategory === 'about'"
-      (click)="selectCategory.emit('about')">
+    <button mat-button class="nav-item" routerLink="about" routerLinkActive="active">
       <mat-icon>info</mat-icon>
-      About YapYap
+      About
     </button>
 
-    <!-- RULES -->
-    <button mat-button class="nav-item" [class.active]="selectedCategory === 'rules'"
-      (click)="selectCategory.emit('rules')">
-      <mat-icon>list_alt_check</mat-icon>
-      Rules
+    <button mat-button class="nav-item" routerLink="rules" routerLinkActive="active">
+      <mat-icon>gavel</mat-icon>
+      Guidelines
+    </button>
+
+    <button mat-button class="nav-item" routerLink="profile" routerLinkActive="active">
+      <mat-icon>person</mat-icon>
+      My Profile
     </button>
 
   </nav>
@@ -62,7 +68,7 @@
   <div class="sidebar-footer">
     <button mat-raised-button color="primary" class="new-topic-btn" (click)="newThread.emit()">
       <mat-icon>add</mat-icon>
-      Start new discussion
+      Start Yapping
     </button>
   </div>
 

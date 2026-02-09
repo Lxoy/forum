@@ -7,7 +7,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './pagination.css',
 })
 export class Pagination {
-  Math = Math;
   @Input() totalItems = 0;
   @Input() pageSize = 5;
   @Input() currentPage = 1;
@@ -18,9 +17,23 @@ export class Pagination {
     return Math.ceil(this.totalItems / this.pageSize);
   }
 
-  pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  get visiblePages(): number[] {
+  const total = this.totalPages;
+  const current = this.currentPage;
+  const delta = 2;
+
+  const range: number[] = [];
+
+  const start = Math.max(1, current - delta);
+  const end = Math.min(total, current + delta);
+
+  for (let i = start; i <= end; i++) {
+    range.push(i);
   }
+
+  return range;
+}
+
 
   prev(): void {
     if (this.currentPage > 1) {

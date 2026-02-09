@@ -1,0 +1,31 @@
+<div class="rules-container">
+
+  <!-- HERO -->
+  <section class="rules-hero">
+    <h1>YapYap Rules</h1>
+    <p>
+      Keep YapYap fun, open, and respectful. Read the rules before you yap.
+    </p>
+  </section>
+
+  <!-- RULE LIST -->
+  <div class="rules-card">
+
+    <div class="rule" *ngFor="let rule of rules; let i = index">
+      <div class="rule-number">
+        {{ i + 1 }}
+      </div>
+
+      <div class="rule-content">
+        <h3>{{ rule.title }}</h3>
+        <p>{{ rule.description }}</p>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      By using YapYap, you agree to follow these guidelines.
+    </div>
+
+  </div>
+
+</div>

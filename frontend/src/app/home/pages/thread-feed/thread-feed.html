@@ -1,9 +1,11 @@
 <section class="thread-feed">
 
+  <!-- THREADS -->
   <app-thread-list
-    [threads]="paginatedThreads">
+    [threads]="visibleThreads">
   </app-thread-list>
 
+  <!-- PAGINATION -->
   <app-pagination
     *ngIf="threads.length > pageSize"
     [totalItems]="threads.length"

@@ -71,8 +71,46 @@ const getPopularThreads = async (req, res) => {
     }
 }
 
+const getThreadsByCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { rows } = await pool.query(
+            `
+            WITH cte AS (
+                SELECT p.thread_id, COUNT(p.id) AS posts_count
+                FROM posts p
+                GROUP BY p.thread_id
+            )
+
+            SELECT 
+                t.id,
+                t.title,
+                t.category_id,
+                c.name AS category,
+                t.user_id,
+                u.username,
+                t.created_at,
+                COALESCE(cte.posts_count, 0) AS posts_count
+            FROM threads t
+            JOIN users u ON u.id = t.user_id
+            JOIN categories c ON c.id = t.category_id
+            LEFT JOIN cte ON cte.thread_id = t.id
+            WHERE t.category_id = $1
+            ORDER BY posts_count DESC
+            `,
+            [id]
+        );
+        res.status(200).json(rows);
+    }
+    catch (error) {
+        console.error("Error fetching threads by category: ", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+}
+
 module.exports = {
     getAllThreads,
     createThread,
-    getPopularThreads
+    getPopularThreads,
+    getThreadsByCategory
 };

@@ -9,6 +9,9 @@ import { ThreadList } from './home/components/thread-list/thread-list';
 import { Thread } from './home/pages/thread/thread';
 import { ThreadFeed } from './home/pages/thread-feed/thread-feed';
 import { NotFound } from './home/pages/not-found/not-found';
+import { Rules } from './home/pages/rules/rules';
+import { About } from './home/pages/about/about';
+import { Profile } from './home/pages/profile/profile';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -19,11 +22,14 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', component: ThreadFeed }, 
+      { path: '', component: ThreadFeed },
       { path: 'explore', component: ThreadFeed },
       { path: 'popular', component: ThreadFeed },
-      { path: 'category/:name', component: ThreadFeed },
+      { path: 'category/:id', component: ThreadFeed },
       { path: 'thread/:id', component: Thread },
+      { path: 'rules', component: Rules },
+      { path: 'about', component: About},
+      { path: 'profile', component: Profile}
     ]
   },
 

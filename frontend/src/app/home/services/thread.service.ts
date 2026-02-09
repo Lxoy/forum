@@ -73,4 +73,27 @@ export class ThreadService {
       });
   }
 
+  fetchByCategory(category: number) {
+    this.http
+      .get<any[]>(`${this.apiUrl}/category/${category}`)
+      .pipe(
+        map(data =>
+          data.map(t => ({
+            id: t.id,
+            title: t.title,
+            userId: t.user_id,
+            username: t.username,
+            categoryId: t.category_id,
+            category: t.category,
+            createdAt: new Date(t.created_at),
+            postsCount: t.posts_count
+          }))
+        )
+      )
+      .subscribe({
+        next: threads => this.threads$.next(threads),
+        error: err => console.error(err)
+      });
+  }
+
 }

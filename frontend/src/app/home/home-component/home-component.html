@@ -11,20 +11,6 @@
 
 </div>
 
-<!-- USER MENU -->
-<div class="user-menu">
-  <button mat-fab color="primary" [matMenuTriggerFor]="logoutMenu">
-    <mat-icon>person</mat-icon>
-  </button>
-
-  <mat-menu #logoutMenu="matMenu">
-    <button mat-menu-item (click)="signOut()">
-      <mat-icon>logout</mat-icon>
-      <span>Log out</span>
-    </button>
-  </mat-menu>
-</div>
-
 <app-new-discussion-menu
   *ngIf="isNewThread"
   [form]="newThreadForm"

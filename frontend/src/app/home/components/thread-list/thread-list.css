@@ -1,36 +1,66 @@
-.topic-card {
-  margin-bottom: 16px;
-  border-radius: 14px;
+.thread-card {
+  margin-bottom: 14px;
+  border-radius: 16px;
+  padding: 18px;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-  }
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
-.topic-header {
+.thread-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.thread-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 20px;
 }
 
-.meta {
+.thread-main {
+  flex: 1;
+}
+
+.thread-meta {
   font-size: 13px;
-  color: #777;
+  color: #8a8a8a;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.topic-header h3 {
+.thread-meta .author {
+  font-weight: 600;
+  color: var(--mat-sys-primary);
+}
+
+.thread-meta .category {
+  background: rgba(63, 81, 181, 0.08);
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.thread-meta .dot {
+  opacity: 0.5;
+}
+
+.thread-title {
   margin: 6px 0 0;
   font-size: 18px;
   font-weight: 600;
+  line-height: 1.4;
 }
 
-.topic-stats {
+.thread-stats {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #3f51b5;
   font-weight: 600;
+  color: var(--mat-sys-primary);
+  opacity: 0.85;
 }

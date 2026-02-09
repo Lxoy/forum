@@ -27,6 +27,10 @@ import { NewDiscussionMenu } from './home/components/new-discussion-menu/new-dis
 import { Thread } from './home/pages/thread/thread';
 import { ThreadFeed } from './home/pages/thread-feed/thread-feed';
 import { NotFound } from './home/pages/not-found/not-found';
+import { Rules } from './home/pages/rules/rules';
+import { About } from './home/pages/about/about';
+import { MatChip, MatChipSet } from '@angular/material/chips';
+import { Profile } from './home/pages/profile/profile';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,9 @@ import { NotFound } from './home/pages/not-found/not-found';
     Thread,
     ThreadFeed,
     NotFound,
+    Rules,
+    About,
+    Profile,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +67,8 @@ import { NotFound } from './home/pages/not-found/not-found';
     MatExpansionModule,
     MatListModule,
     MatSelectModule,
+    MatChip,
+    MatChipSet
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

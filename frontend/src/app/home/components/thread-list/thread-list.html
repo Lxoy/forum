@@ -1,22 +1,30 @@
 <mat-card
-  class="topic-card"
-  (click)="openThread(thread.id)"
-  *ngFor="let thread of paginatedThreads">
+  class="thread-card"
+  *ngFor="let thread of paginatedThreads"
+  (click)="openThread(thread.id)">
 
-  <div class="topic-header">
+  <div class="thread-content">
 
-    <div>
-      <span class="meta">
-        by <strong>{{ thread.username }}</strong>
-        • {{ thread.createdAt | date:'dd.MM.yyyy' }}
-        • {{ thread.category }}
-      </span>
+    <!-- LEFT CONTENT -->
+    <div class="thread-main">
 
-      <h3>{{ thread.title }}</h3>
+      <div class="thread-meta">
+        <span class="author">@{{ thread.username }}</span>
+        <span class="dot">•</span>
+        <span>{{ thread.createdAt | date:'dd.MM.yyyy' }}</span>
+        <span class="dot">•</span>
+        <span class="category">{{ thread.category }}</span>
+      </div>
+
+      <h3 class="thread-title">
+        {{ thread.title }}
+      </h3>
+
     </div>
 
-    <div class="topic-stats">
-      <mat-icon>chat</mat-icon>
+    <!-- RIGHT STATS -->
+    <div class="thread-stats">
+      <mat-icon>chat_bubble_outline</mat-icon>
       <span>{{ thread.postsCount }}</span>
     </div>
 

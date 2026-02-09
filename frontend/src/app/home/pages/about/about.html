@@ -1,0 +1,46 @@
+<div class="about-container">
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h1>Welcome to YapYap</h1>
+    <p>
+      YapYap is a place to talk, share ideas, ask questions,
+      and connect with people who love to yap about what matters.
+    </p>
+  </section>
+
+
+  <!-- FEATURES GRID -->
+  <section class="features">
+
+    <mat-card class="feature-card" *ngFor="let feature of features">
+      <mat-icon class="feature-icon" color="primary">
+        {{ feature.icon }}
+      </mat-icon>
+
+      <h3>{{ feature.title }}</h3>
+      <p>{{ feature.description }}</p>
+    </mat-card>
+
+  </section>
+
+
+  <!-- COMMUNITY VALUES -->
+  <section class="values">
+    <mat-card class="values-card">
+
+      <h2>What YapYap Is About</h2>
+
+      <div class="chips">
+        <mat-chip-set>
+          <mat-chip selected color="primary">Open Conversations</mat-chip>
+          <mat-chip selected color="primary">Community First</mat-chip>
+          <mat-chip selected color="primary">Honest Opinions</mat-chip>
+          <mat-chip selected color="primary">Fun & Respect</mat-chip>
+        </mat-chip-set>
+      </div>
+
+    </mat-card>
+  </section>
+
+</div>

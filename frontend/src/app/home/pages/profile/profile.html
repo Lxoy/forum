@@ -1,0 +1,56 @@
+<div class="profile-container">
+
+  <mat-card class="profile-card">
+
+    <!-- HEADER -->
+    <div class="profile-header">
+
+      <div class="avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+
+      <div class="user-info">
+        <h2>{{ username }}</h2>
+        <p class="email">{{ email }}</p>
+      </div>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- STATS -->
+    <div class="stats">
+
+      <div class="stat">
+        <h3>{{ stats.posts }}</h3>
+        <p>Posts</p>
+      </div>
+
+      <div class="stat">
+        <h3>{{ stats.threads }}</h3>
+        <p>Threads</p>
+      </div>
+
+      <div class="stat">
+        <h3>{{ stats.joined }}</h3>
+        <p>Joined</p>
+      </div>
+
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button mat-stroked-button color="primary">
+        Edit Profile
+      </button>
+
+      <button mat-stroked-button color="warn" (click)="signOut()">
+        Logout
+      </button>
+    </div>
+
+  </mat-card>
+
+</div>
