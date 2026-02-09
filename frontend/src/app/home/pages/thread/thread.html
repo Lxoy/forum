@@ -2,29 +2,45 @@
 
   <!-- HEADER -->
   <header class="thread-header">
+    <div class="category-badge">
+      Angular
+    </div>
+
     <h1 class="thread-title">
       Thread title goes here
     </h1>
 
     <div class="thread-meta">
-      <span>by John Doe</span>
-      <span>•</span>
-      <span>12.03.2025</span>
-      <span class="category">Angular</span>
+      <span class="author">
+        <mat-icon>person</mat-icon>
+        John Doe
+      </span>
+
+      <span class="dot">•</span>
+
+      <span class="date">
+        <mat-icon>schedule</mat-icon>
+        12.03.2025
+      </span>
     </div>
   </header>
 
   <!-- POSTS -->
   <section class="posts">
     <div class="post" *ngFor="let post of posts">
-      <div class="post-author">
-        <mat-icon>account_circle</mat-icon>
-        <span>{{ post.author }}</span>
+
+      <div class="post-header">
+        <mat-icon class="avatar">account_circle</mat-icon>
+        <div class="post-user">
+          <span class="username">{{ post.author }}</span>
+          <span class="post-date">2 hours ago</span>
+        </div>
       </div>
 
       <div class="post-content">
         {{ post.content }}
       </div>
+
     </div>
   </section>
 

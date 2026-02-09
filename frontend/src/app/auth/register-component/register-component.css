@@ -3,63 +3,93 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 20px;
+  background: #f6f8fb;
+  padding: 24px;
 }
 
 .register-card {
-  max-width: 400px;
   width: 100%;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
-  padding: 12px;
+  max-width: 420px;
+  padding: 32px 28px;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .header-section {
   text-align: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
 }
 
 .logo-box {
-  width: 50px;
-  height: 50px;
-  background-color: #3f51b5;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: #3f51b5;
   color: white;
-  border-radius: 10px;
+  font-weight: 600;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 20px;
-  margin: 0 auto 12px;
+  margin: 0 auto 16px;
+  box-shadow: 0 6px 16px rgba(63, 81, 181, 0.25);
+}
+
+.header-section h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 .register-form {
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 4px;
 }
 
 .submit-btn {
-  margin-top: 16px;
   height: 48px;
   font-weight: 600;
-  letter-spacing: 1px;
+  border-radius: 10px;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+.divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin-top: 8px;
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 4px;
-  padding: 16px 0 !important;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.actions a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #3f51b5;
+}
+
+.actions a:hover {
+  text-decoration: underline;
 }
 
 mat-icon[matPrefix] {
   margin-right: 8px;
-  color: rgba(0,0,0,0.54);
+  color: rgba(0, 0, 0, 0.54);
 }

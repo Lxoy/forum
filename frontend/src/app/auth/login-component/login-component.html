@@ -1,50 +1,51 @@
 <div class="login-container">
-    <mat-card class="login-card" appearance="outlined">
+  <mat-card class="login-card">
 
-        <div class="header-section">
-            <div class="logo-box">YY</div>
-            <mat-card-title>Welcome back</mat-card-title>
-            <mat-card-subtitle>Time for more yapping.</mat-card-subtitle>
-        </div>
+    <div class="header-section">
+      <div class="logo-box">YY</div>
+      <h2>Welcome back</h2>
+      <p class="subtitle">Sign in to continue yapping.</p>
+    </div>
 
-        <mat-card-content>
-            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Username</mat-label>
-                    <input matInput formControlName="username" placeholder="npr. d_willow">
-                    <mat-icon matPrefix>person</mat-icon>
-                    <mat-error *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-                        Username is required
-                    </mat-error>
-                </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="d_willow">
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-error *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+          Username is required
+        </mat-error>
+      </mat-form-field>
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Password</mat-label>
-                    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-                    <mat-icon matPrefix>lock</mat-icon>
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Password is required
+        </mat-error>
+      </mat-form-field>
 
-                    <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-                        Min. 6 characters
-                    </mat-error>
-                </mat-form-field>
+      <button 
+        mat-flat-button 
+        color="primary" 
+        class="submit-btn"
+        type="submit"
+        [disabled]="loginForm.invalid">
+        Sign In
+      </button>
 
-                <button mat-flat-button color="primary" class="full-width submit-btn" type="submit"
-                    [disabled]="loginForm.invalid">
-                    LOGIN
-                </button>
+    </form>
 
-            </form>
-        </mat-card-content>
+    <div class="divider"></div>
 
-        <mat-divider></mat-divider>
+    <div class="actions">
+      <a routerLink="/register">New here?</a>
+    </div>
 
-        <mat-card-actions class="actions">
-            <a mat-button color="primary" routerLink="/register">Don't have an account?</a>
-        </mat-card-actions>
-
-    </mat-card>
+  </mat-card>
 </div>
