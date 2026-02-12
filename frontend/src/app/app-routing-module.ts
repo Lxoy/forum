@@ -6,7 +6,7 @@ import { AuthService } from './auth/auth.service';
 import { HomeComponent } from './home/home-component/home-component';
 import { authGuard } from './home/core/guards/auth-guard';
 import { ThreadList } from './home/components/thread-list/thread-list';
-import { Thread } from './home/pages/thread/thread';
+import ThreadPage from './home/pages/thread/thread';
 import { ThreadFeed } from './home/pages/thread-feed/thread-feed';
 import { NotFound } from './home/pages/not-found/not-found';
 import { Rules } from './home/pages/rules/rules';
@@ -26,7 +26,7 @@ const routes: Routes = [
       { path: 'explore', component: ThreadFeed },
       { path: 'popular', component: ThreadFeed },
       { path: 'category/:id', component: ThreadFeed },
-      { path: 'thread/:id', component: Thread },
+      { path: 'thread/:id', component: ThreadPage },
       { path: 'rules', component: Rules },
       { path: 'about', component: About},
       { path: 'profile', component: Profile}

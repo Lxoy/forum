@@ -3,19 +3,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f6f8fb;
+  background: linear-gradient(135deg, #e0e7ff 0%, #f6f8fb 100%);
   padding: 24px;
 }
 
 .register-card {
   width: 100%;
   max-width: 420px;
-  padding: 32px 28px;
-  border-radius: 16px !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+  padding: 40px 32px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+  background: #ffffff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.register-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
 }
 
 .header-section {
@@ -23,23 +30,45 @@
 }
 
 .logo-box {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: #3f51b5;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3f51b5, #5c6bc0);
   color: white;
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
-  box-shadow: 0 6px 16px rgba(63, 81, 181, 0.25);
+  box-shadow: 0 10px 25px rgba(63, 81, 181, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-box:hover {
+  transform: scale(1.15);
+  box-shadow: 0 15px 35px rgba(63, 81, 181, 0.4);
+}
+
+.logo-box::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255,255,255,0.05);
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 
 .header-section h2 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 22px;
+  color: #111827;
 }
 
 .subtitle {
@@ -51,7 +80,7 @@
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .full-width {
@@ -59,29 +88,30 @@
 }
 
 .submit-btn {
-  height: 48px;
-  font-weight: 600;
-  border-radius: 10px;
-  margin-top: 8px;
+  height: 50px;
+  font-weight: 700;
+  border-radius: 12px;
   letter-spacing: 0.5px;
+  font-size: 16px;
 }
 
 .divider {
   height: 1px;
   background: #e5e7eb;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 14px;
+  color: #6b7280;
 }
 
 .actions a {
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   color: #3f51b5;
 }
 
@@ -92,4 +122,17 @@
 mat-icon[matPrefix] {
   margin-right: 8px;
   color: rgba(0, 0, 0, 0.54);
+}
+
+mat-form-field {
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+mat-form-field.mat-focused .mat-form-field-outline {
+  color: #3f51b5;
+}
+
+.register-form input::placeholder {
+  color: #9ca3af;
 }

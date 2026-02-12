@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Thread } from '../model/thread.model';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,6 +11,8 @@ export class ThreadService {
 
   private threads$ = new BehaviorSubject<Thread[]>([]);
   private selectedCategory$ = new BehaviorSubject<string | null>(null);
+
+  private threadSubject = new BehaviorSubject<Thread | null>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -51,7 +53,7 @@ export class ThreadService {
 
 
   fetchPopular() {
-     this.http
+    this.http
       .get<any[]>(`${this.apiUrl}/popular`)
       .pipe(
         map(data =>
@@ -95,5 +97,33 @@ export class ThreadService {
         error: err => console.error(err)
       });
   }
+
+  fetchThread(threadId: number) {
+    this.threadSubject.next(null);
+    this.http.get<any>(`${this.apiUrl}/thread/${threadId}`)
+      .pipe(
+        map(t => ({
+          id: t.id,
+          title: t.title,
+          userId: t.user_id,
+          username: t.username,
+          categoryId: t.category_id,
+          category: t.category,
+          createdAt: new Date(t.created_at),
+          postsCount: Number(t.posts_count)
+        }))
+      )
+      .subscribe(thread => this.threadSubject.next(thread));
+  }
+
+
+
+  getThread(): Observable<Thread | null> {
+    return this.threadSubject.asObservable();
+  }
+
+  deleteThread(threadId: number) {
+  return this.http.delete(`${this.apiUrl}/thread/${threadId}`);
+}
 
 }

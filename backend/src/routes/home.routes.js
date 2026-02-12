@@ -1,15 +1,27 @@
 const express = require('express');
-const getAllCategoriesNames = require('../controllers/category.controller');
-const {getAllThreads, createThread, getPopularThreads, getThreadsByCategory} = require('../controllers/thread.controller');
-const authMiddleware = require('../middleware/auth.middleware');
-const createPost = require('../controllers/post.controller');
 const router = express.Router();
+const authMiddleware = require('../middleware/auth.middleware');
 
-router.get('/categories', getAllCategoriesNames);
-router.get('/thread', getAllThreads);
-router.post('/thread', authMiddleware, createThread)
-router.post('/post', authMiddleware, createPost);
-router.get('/popular', getPopularThreads);
-router.get('/category/:id', getThreadsByCategory);
+// Controllers
+const categoryController = require('../controllers/category.controller');
+const threadController = require('../controllers/thread.controller');
+const postController = require('../controllers/post.controller');
+
+/* ---------- CATEGORY ---------- */
+router.get('/categories', categoryController.getAllCategoriesNames);
+
+/* ---------- THREAD ---------- */
+router.get('/thread', authMiddleware, threadController.getAllThreads);
+router.post('/thread', authMiddleware, threadController.createThread);
+router.get('/thread/:id', authMiddleware, threadController.getThreadById);
+router.delete('/thread/:id', authMiddleware, threadController.deleteThread);
+
+/* ---------- THREAD POSTS ---------- */
+router.get('/thread/:id/posts', authMiddleware, postController.getAllPostsByThreadId);
+router.post('/post', authMiddleware, postController.createPost);
+
+/* ---------- OTHER ---------- */
+router.get('/popular', authMiddleware, threadController.getPopularThreads);
+router.get('/category/:id', authMiddleware, threadController.getThreadsByCategory);
 
 module.exports = router;

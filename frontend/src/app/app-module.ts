@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './auth/login-component/login-component';
 import { HomeComponent } from './home/home-component/home-component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,15 +22,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { PaginatePipe } from './home/paginate-pipe';
 import { ThreadList } from './home/components/thread-list/thread-list';
 import { Sidebar } from './home/components/sidebar/sidebar';
-import { Pagination } from './home/components/pagination/pagination';
 import { NewDiscussionMenu } from './home/components/new-discussion-menu/new-discussion-menu';
-import { Thread } from './home/pages/thread/thread';
+import ThreadPage from './home/pages/thread/thread';
 import { ThreadFeed } from './home/pages/thread-feed/thread-feed';
 import { NotFound } from './home/pages/not-found/not-found';
 import { Rules } from './home/pages/rules/rules';
 import { About } from './home/pages/about/about';
-import { MatChip, MatChipSet } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { Profile } from './home/pages/profile/profile';
+import { Pagination } from './home/components/pagination/pagination';
+import { AuthInterceptor } from './home/core/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { Profile } from './home/pages/profile/profile';
     Sidebar,
     Pagination,
     NewDiscussionMenu,
-    Thread,
+    ThreadPage,
     ThreadFeed,
     NotFound,
     Rules,
@@ -67,11 +68,15 @@ import { Profile } from './home/pages/profile/profile';
     MatExpansionModule,
     MatListModule,
     MatSelectModule,
-    MatChip,
-    MatChipSet
+    MatChipsModule
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [App]
 })

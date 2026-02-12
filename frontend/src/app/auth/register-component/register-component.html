@@ -2,7 +2,7 @@
   <mat-card class="register-card">
 
     <div class="header-section">
-      <div class="logo-box">YY</div>
+      <div class="logo-box">Yap</div>
       <h2>Create account</h2>
       <p class="subtitle">Join YapYap and start yapping.</p>
     </div>
@@ -39,12 +39,7 @@
         </mat-error>
       </mat-form-field>
 
-      <button 
-        mat-flat-button 
-        color="primary" 
-        class="submit-btn"
-        type="submit"
-        [disabled]="registerForm.invalid">
+      <button mat-flat-button color="primary" class="submit-btn" type="submit" [disabled]="registerForm.invalid">
         Create Account
       </button>
 
@@ -53,7 +48,8 @@
     <div class="divider"></div>
 
     <div class="actions">
-      <a routerLink="/login">Already have an account?</a>
+      <span>Already yapped?</span>
+      <a routerLink="/login">Login</a>
     </div>
 
   </mat-card>

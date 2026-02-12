@@ -15,5 +15,6 @@
   *ngIf="isNewThread"
   [form]="newThreadForm"
   [categories]="categories"
-  (close)="closeNewThread()">
+  (close)="closeNewThread()"
+  (submit)="createThread()">
 </app-new-discussion-menu>

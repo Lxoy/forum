@@ -1,7 +1,7 @@
 export interface Post {
   id: number;
-  threadId: number;
-  author: string;
   content: string;
+  userId: number;
+  username: string;
   createdAt: Date;
 }
