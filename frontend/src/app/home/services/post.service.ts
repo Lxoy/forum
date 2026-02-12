@@ -12,7 +12,7 @@ export class PostService {
 
   private posts$ = new BehaviorSubject<Post[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getPosts() {
     return this.posts$.asObservable();
@@ -40,6 +40,19 @@ export class PostService {
 
   createPost(postData: { threadId: number; content: string }) {
     return this.http.post(`${this.apiUrl}/post`, postData);
+  }
+
+  updatePost(postId: number, content: string) {
+    return this.http.put(
+      `http://localhost:3000/api/home/post/${postId}`,
+      { content }
+    );
+  }
+
+  deletePost(postId: number) {
+    return this.http.delete(
+      `http://localhost:3000/api/home/post/${postId}`
+    );
   }
 
 }

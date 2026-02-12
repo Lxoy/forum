@@ -1,28 +1,52 @@
 <div class="thread-page" *ngIf="currThread">
 
   <!-- THREAD HEADER -->
-  <header class="thread-header">
+  <div class="thread-header">
 
-    <div class="thread-header-top">
-      <div class="category-badge">
-        {{ currThread.category }}
+    <!-- TOP ROW -->
+    <div class="thread-top">
+
+      <div class="left">
+        <span class="category-badge">
+          {{ currThread.category }}
+        </span>
       </div>
 
-      <!-- DELETE BUTTON -->
-      <button
-        *ngIf="isOwner"
-        mat-icon-button
-        color="warn"
-        class="delete-btn"
-        (click)="deleteThread()">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <div class="actions" *ngIf="isOwner && !isEditing">
+        <button mat-icon-button (click)="startEdit()">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="deleteThread()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
     </div>
 
-    <h1 class="thread-title">
-      {{ currThread.title }}
-    </h1>
+    <!-- TITLE -->
+    <div class="title-row">
 
+      <h1 *ngIf="!isEditing" class="thread-title">
+        {{ currThread.title }}
+      </h1>
+
+      <!-- EDIT MODE -->
+      <div *ngIf="isEditing" class="edit-container">
+        <input type="text" [(ngModel)]="editedTitle" class="edit-input" />
+
+        <button mat-icon-button (click)="saveTitle()">
+          <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="cancelEdit()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- META -->
     <div class="thread-meta">
       <span class="author">
         {{ currThread.username }}
@@ -35,12 +59,13 @@
       </span>
     </div>
 
-  </header>
+  </div>
 
   <!-- POSTS -->
   <div class="posts" #postsContainer>
 
-    <div class="post comment" *ngFor="let post of posts">
+    <div class="post" *ngFor="let post of posts">
+
       <div class="post-header">
         <mat-icon class="avatar">account_circle</mat-icon>
 
@@ -50,15 +75,43 @@
             {{ post.createdAt | date:'dd.MM.yyyy HH:mm' }}
           </span>
         </div>
+
+        <div class="post-actions" *ngIf="isPostOwner(post.userId)">
+          <button mat-icon-button (click)="startPostEdit(post)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button color="warn" (click)="deletePost(post.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
 
-      <div class="post-content">
+      <!-- NORMAL MODE -->
+      <div *ngIf="editingPostId !== post.id" class="post-content">
         {{ post.content }}
       </div>
+
+      <!-- EDIT MODE -->
+      <div *ngIf="editingPostId === post.id" class="edit-post-container">
+        <textarea [(ngModel)]="editedPostContent"></textarea>
+
+        <div class="edit-buttons">
+          <button mat-button color="primary" (click)="savePost(post.id)">
+            Save
+          </button>
+
+          <button mat-button (click)="cancelPostEdit()">
+            Cancel
+          </button>
+        </div>
+      </div>
+
     </div>
 
+
     <div class="no-comments" *ngIf="posts.length === 1">
-      Yap here!
+      Be the first to yap back.
     </div>
 
   </div>

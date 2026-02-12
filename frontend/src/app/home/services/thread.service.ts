@@ -123,7 +123,15 @@ export class ThreadService {
   }
 
   deleteThread(threadId: number) {
-  return this.http.delete(`${this.apiUrl}/thread/${threadId}`);
-}
+    return this.http.delete(`${this.apiUrl}/thread/${threadId}`);
+  }
+
+  updateTitle(threadId: number, title: string) {
+    return this.http.put(
+      `${this.apiUrl}/thread/${threadId}`,
+      { title }
+    );
+  }
+
 
 }

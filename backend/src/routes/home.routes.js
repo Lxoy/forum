@@ -15,10 +15,13 @@ router.get('/thread', authMiddleware, threadController.getAllThreads);
 router.post('/thread', authMiddleware, threadController.createThread);
 router.get('/thread/:id', authMiddleware, threadController.getThreadById);
 router.delete('/thread/:id', authMiddleware, threadController.deleteThread);
+router.put('/thread/:id', authMiddleware, threadController.updateThreadTitle);
 
 /* ---------- THREAD POSTS ---------- */
 router.get('/thread/:id/posts', authMiddleware, postController.getAllPostsByThreadId);
 router.post('/post', authMiddleware, postController.createPost);
+router.put('/post/:id', authMiddleware, postController.updatePost);
+router.delete('/post/:id', authMiddleware, postController.deletePost);
 
 /* ---------- OTHER ---------- */
 router.get('/popular', authMiddleware, threadController.getPopularThreads);
