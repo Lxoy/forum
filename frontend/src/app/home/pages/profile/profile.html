@@ -1,56 +1,70 @@
 <div class="profile-container">
 
-  <mat-card class="profile-card">
+  <div class="profile-card">
 
-    <!-- HEADER -->
-    <div class="profile-header">
-
-      <div class="avatar">
-        <mat-icon>account_circle</mat-icon>
-      </div>
-
-      <div class="user-info">
-        <h2>{{ username }}</h2>
-        <p class="email">{{ email }}</p>
-      </div>
-
+    <div class="avatar">
+      <mat-icon>account_circle</mat-icon>
     </div>
 
-    <mat-divider></mat-divider>
+    <!-- VIEW MODE -->
+    <div class="user-info" *ngIf="!editMode">
+      <h2>{{ user?.username }}</h2>
+      <p class="email">{{ user?.email }}</p>
 
-    <!-- STATS -->
-    <div class="stats">
+      <div class="actions">
+        <button mat-stroked-button color="primary" (click)="enableEdit()">
+          Edit Profile
+        </button>
 
-      <div class="stat">
-        <h3>{{ stats.posts }}</h3>
-        <p>Posts</p>
+        <button mat-flat-button color="warn" (click)="signOut()">
+          Logout
+        </button>
       </div>
-
-      <div class="stat">
-        <h3>{{ stats.threads }}</h3>
-        <p>Threads</p>
-      </div>
-
-      <div class="stat">
-        <h3>{{ stats.joined }}</h3>
-        <p>Joined</p>
-      </div>
-
     </div>
 
-    <mat-divider></mat-divider>
+    <!-- EDIT MODE -->
+    <form [formGroup]="profileForm" *ngIf="editMode" class="edit-form">
 
-    <!-- ACTIONS -->
-    <div class="actions">
-      <button mat-stroked-button color="primary">
-        Edit Profile
-      </button>
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username">
+        <mat-error *ngIf="profileForm.get('username')?.hasError('required')">
+          Username is required
+        </mat-error>
+      </mat-form-field>
 
-      <button mat-stroked-button color="warn" (click)="signOut()">
-        Logout
-      </button>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+          Invalid email format
+        </mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" [disabled]="profileForm.invalid || isSaving" (click)="saveProfile()">
+          {{ isSaving ? 'Saving...' : 'Save' }}
+        </button>
+
+        <button mat-stroked-button type="button" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
     </div>
 
-  </mat-card>
+    <div class="success-message" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+
+  </div>
 
 </div>

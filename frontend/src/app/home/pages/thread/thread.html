@@ -12,7 +12,7 @@
         </span>
       </div>
 
-      <div class="actions" *ngIf="isOwner && !isEditing">
+      <div class="actions" *ngIf="canDeleteThread() && !isEditing">
         <button mat-icon-button (click)="startEdit()">
           <mat-icon>edit</mat-icon>
         </button>
@@ -76,7 +76,7 @@
           </span>
         </div>
 
-        <div class="post-actions" *ngIf="isPostOwner(post.userId)">
+        <div class="post-actions" *ngIf="canDeletePost(post.userId)">
           <button mat-icon-button (click)="startPostEdit(post)">
             <mat-icon>edit</mat-icon>
           </button>
@@ -115,4 +115,22 @@
     </div>
 
   </div>
+
+  <!-- ADD COMMENT BAR -->
+<div class="add-comment">
+  <textarea
+    [(ngModel)]="newPostContent"
+    placeholder="Write your reply..."
+  ></textarea>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="createPost()"
+    [disabled]="!newPostContent.trim()"
+  >
+    Post
+  </button>
+</div>
+
 </div>

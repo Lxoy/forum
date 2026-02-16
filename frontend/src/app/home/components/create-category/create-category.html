@@ -1,0 +1,45 @@
+<div class="overlay" (click)="close.emit()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <h2>Create New Category</h2>
+
+        <form [formGroup]="categoryForm" (ngSubmit)="submit()">
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" />
+
+                <mat-error *ngIf="categoryForm.get('name')?.hasError('required')">
+                    Name is required
+                </mat-error>
+
+                <mat-error *ngIf="categoryForm.get('name')?.hasError('minlength')">
+                    Minimum 3 characters required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput rows="3" formControlName="description"></textarea>
+                <mat-error *ngIf="categoryForm.get('description')?.hasError('required')">
+                    Description is required
+                </mat-error>
+
+                <mat-error *ngIf="categoryForm.get('description')?.hasError('minlength')">
+                    Minimum 5 characters required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="actions">
+                <button mat-button type="button" (click)="close.emit()">Cancel</button>
+
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+                    Create
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

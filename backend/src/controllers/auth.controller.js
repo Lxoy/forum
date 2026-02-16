@@ -39,9 +39,9 @@ const login = async (req, res) => {
         if (!username || !password) {
             return res.status(400).json({ message: 'Missing fields' });
         }
-
+        
         const result = await pool.query(
-            `SELECT id, password_hash FROM users WHERE username = $1`,
+            `SELECT id, password_hash, role FROM users WHERE username = $1`,
             [username]
         );
 
@@ -49,7 +49,11 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        const { id: userId, password_hash: storedHash } = result.rows[0];
+        const {
+            id: userId,
+            password_hash: storedHash,
+            role
+        } = result.rows[0];
 
         const passwordMatch = await bcrypt.compare(password, storedHash);
 
@@ -58,11 +62,14 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: userId, username },
+            {
+                id: userId,
+                username,
+                role
+            },
             JWT_SECRET,
             { expiresIn: '24h' }
         );
-
 
         return res.status(200).json({
             message: "Login successful!",
@@ -73,6 +80,8 @@ const login = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: 'Server error.' });
     }
-}
+};
+
+
 
 module.exports = { register, login };

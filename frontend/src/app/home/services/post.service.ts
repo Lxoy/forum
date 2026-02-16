@@ -38,20 +38,30 @@ export class PostService {
       });
   }
 
-  createPost(postData: { threadId: number; content: string }) {
-    return this.http.post(`${this.apiUrl}/post`, postData);
-  }
+  createPost(threadId: number, content: string) {
+  return this.http
+    .post<any>(`${this.apiUrl}/post`, { threadId, content })
+    .pipe(
+      map(p => ({
+        id: p.id,
+        content: p.content,
+        userId: p.user_id,
+        username: p.username,
+        createdAt: new Date(p.created_at)
+      }))
+    );
+}
 
   updatePost(postId: number, content: string) {
     return this.http.put(
-      `http://localhost:3000/api/home/post/${postId}`,
+      `${this.apiUrl}/post/${postId}`,
       { content }
     );
   }
 
   deletePost(postId: number) {
     return this.http.delete(
-      `http://localhost:3000/api/home/post/${postId}`
+      `${this.apiUrl}/post/${postId}`
     );
   }
 

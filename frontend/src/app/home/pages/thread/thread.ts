@@ -1,11 +1,12 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Post } from '../../model/post.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ThreadService } from '../../services/thread.service';
 import { Thread } from '../../model/thread.model';
 import { AuthService } from '../../../auth/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-thread',
@@ -13,130 +14,206 @@ import { AuthService } from '../../../auth/auth.service';
   templateUrl: './thread.html',
   styleUrl: './thread.css',
 })
-export default class ThreadPage {
+export default class ThreadPage implements OnInit, OnDestroy, AfterViewChecked {
+  // =========================
+  // Auth
+  // =========================
   currentUserId: number | null = null;
+  currentUserRole: string | null = null;
+
+  // =========================
+  // Thread state
+  // =========================
+  currThread: Thread | null = null;
+  threadId!: number;
 
   isEditing = false;
   editedTitle = '';
 
+  // =========================
+  // Posts state
+  // =========================
+  posts: Post[] = [];
+
   editingPostId: number | null = null;
   editedPostContent = '';
+  newPostContent = '';
+
+  shouldScroll = false;
 
   @ViewChild('postsContainer') postsContainer?: ElementRef;
 
-  currThread: Thread | null = null;
-  posts: Post[] = [];
-  threadId!: number;
-
-  private postsSub!: Subscription;
-  private threadSub!: Subscription;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private postService: PostService,
     private threadService: ThreadService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) { }
 
+  // =========================
+  // Lifecycle
+  // =========================
   ngOnInit(): void {
     this.currentUserId = this.authService.getCurrentUserId();
-
     this.threadId = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.userService
+      .getUser()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.currentUserRole = user?.role || null;
+      });
 
     this.threadService.fetchThread(this.threadId);
     this.postService.fetchByThread(this.threadId);
 
-    this.threadSub = this.threadService.getThread()
-      .subscribe(thread => this.currThread = thread ?? null);
+    this.threadService
+      .getThread()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(thread => {
+        this.currThread = thread;
+      });
 
-    this.postsSub = this.postService.getPosts()
-      .subscribe(posts => this.posts = posts);
+    this.postService
+      .getPosts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(posts => {
+        this.posts = posts;
+      });
+  }
+
+
+  ngAfterViewChecked(): void {
+    if (this.shouldScroll && this.postsContainer) {
+      this.postsContainer.nativeElement.scrollTo({
+        top: this.postsContainer.nativeElement.scrollHeight,
+        behavior: 'smooth'
+      });
+
+      this.shouldScroll = false;
+    }
   }
 
   ngOnDestroy(): void {
-    this.postsSub?.unsubscribe();
-    this.threadSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
+  // =========================
+  // Computed
+  // =========================
   get isOwner(): boolean {
-    const result = this.currThread?.userId === this.currentUserId;
-    console.log('isOwner', result, this.currThread?.userId, this.currentUserId);
-    return !!result;
+    return (
+      this.currThread !== null &&
+      this.currThread.userId === this.currentUserId
+    );
   }
 
+  get isPostInvalid(): boolean {
+    return !this.newPostContent.trim();
+  }
+
+  // =========================
+  // Thread actions
+  // =========================
   deleteThread(): void {
     if (!this.currThread) return;
-
     if (!confirm('Are you sure you want to delete this thread?')) return;
 
-    this.threadService.deleteThread(this.currThread.id)
+    this.threadService
+      .deleteThread(this.currThread.id)
       .subscribe(() => this.router.navigate(['/']));
   }
 
+  startEdit(): void {
+    if (!this.currThread) return;
 
-  startEdit() {
     this.isEditing = true;
-    this.editedTitle = this.currThread?.title || '';
+    this.editedTitle = this.currThread.title;
   }
 
-  cancelEdit() {
+  cancelEdit(): void {
     this.isEditing = false;
     this.editedTitle = '';
   }
 
-  saveTitle() {
-    if (!this.editedTitle.trim() || !this.currThread) return;
+  saveTitle(): void {
+    if (!this.currThread) return;
+    if (!this.editedTitle.trim()) return;
 
     this.threadService
       .updateTitle(this.currThread.id, this.editedTitle)
-      .subscribe({
-        next: () => {
-          this.isEditing = false;
-
-          this.threadService.fetchThread(this.currThread!.id);
-        },
-        error: err => console.error(err)
+      .subscribe(() => {
+        this.isEditing = false;
+        this.threadService.fetchThread(this.currThread!.id);
       });
   }
 
-  isPostOwner(postUserId: number): boolean {
-  return postUserId === this.currentUserId;
+  // =========================
+  // Post actions
+  // =========================
+  canDeletePost(postUserId: number): boolean {
+    return (
+      postUserId === this.currentUserId ||
+      this.currentUserRole === 'ADMIN'
+    );
+  }
+
+  canDeleteThread(): boolean {
+  return (
+    this.currThread !== null &&
+    (
+      this.currThread.userId === this.currentUserId ||
+      this.currentUserRole === 'ADMIN'
+    )
+  );
 }
 
-startPostEdit(post: any) {
-  this.editingPostId = post.id;
-  this.editedPostContent = post.content;
-}
+  startPostEdit(post: Post): void {
+    this.editingPostId = post.id;
+    this.editedPostContent = post.content;
+  }
 
-cancelPostEdit() {
-  this.editingPostId = null;
-  this.editedPostContent = '';
-}
+  cancelPostEdit(): void {
+    this.editingPostId = null;
+    this.editedPostContent = '';
+  }
 
-savePost(postId: number) {
-  if (!this.editedPostContent.trim()) return;
+  savePost(postId: number): void {
+    if (!this.editedPostContent.trim()) return;
 
-  this.postService.updatePost(postId, this.editedPostContent)
-    .subscribe({
-      next: () => {
+    this.postService
+      .updatePost(postId, this.editedPostContent)
+      .subscribe(() => {
         this.editingPostId = null;
         this.postService.fetchByThread(this.threadId);
-      },
-      error: err => console.error(err)
-    });
-}
+      });
+  }
 
-deletePost(postId: number) {
-  if (!confirm('Delete this post?')) return;
+  deletePost(postId: number): void {
+    if (!confirm('Delete this post?')) return;
 
-  this.postService.deletePost(postId)
-    .subscribe({
-      next: () => {
+    this.postService
+      .deletePost(postId)
+      .subscribe(() => {
         this.postService.fetchByThread(this.threadId);
-      },
-      error: err => console.error(err)
-    });
-}
+      });
+  }
 
+  createPost(): void {
+    if (!this.currThread) return;
+    if (!this.newPostContent.trim()) return;
+
+    this.postService
+      .createPost(this.currThread.id, this.newPostContent)
+      .subscribe(() => {
+        this.newPostContent = '';
+        this.shouldScroll = true;
+        this.postService.fetchByThread(this.threadId);
+      });
+  }
 }

@@ -6,9 +6,12 @@ const authMiddleware = require('../middleware/auth.middleware');
 const categoryController = require('../controllers/category.controller');
 const threadController = require('../controllers/thread.controller');
 const postController = require('../controllers/post.controller');
+const userController = require('../controllers/user.controller');
 
 /* ---------- CATEGORY ---------- */
 router.get('/categories', categoryController.getAllCategoriesNames);
+router.post('/categories', categoryController.createCategory);
+router.delete('/categories/:id', categoryController.deleteCategory);
 
 /* ---------- THREAD ---------- */
 router.get('/thread', authMiddleware, threadController.getAllThreads);
@@ -26,5 +29,9 @@ router.delete('/post/:id', authMiddleware, postController.deletePost);
 /* ---------- OTHER ---------- */
 router.get('/popular', authMiddleware, threadController.getPopularThreads);
 router.get('/category/:id', authMiddleware, threadController.getThreadsByCategory);
+
+/* ---------- USER ----------- */
+router.get('/me', authMiddleware, userController.getProfile);
+router.put('/me', authMiddleware, userController.updateProfile);
 
 module.exports = router;

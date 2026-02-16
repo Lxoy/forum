@@ -9,9 +9,15 @@ import { Category } from '../../model/category.model';
   styleUrl: './new-discussion-menu.css',
 })
 export class NewDiscussionMenu {
-  @Input() form!: FormGroup
+  @Input() form!: FormGroup;
   @Input() categories: Category[] = [];
+  @Input() isCreating = false;
 
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<void>();
+
+  onSubmit() {
+    if (this.form.invalid || this.isCreating) return;
+    this.submit.emit();
+  }
 }

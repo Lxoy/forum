@@ -1,14 +1,12 @@
 <div class="overlay" (click)="close.emit()">
   <div class="modal" (click)="$event.stopPropagation()">
 
-    <!-- HEADER -->
     <div class="modal-header">
       <h2>Start a new discussion</h2>
       <p>Share your thoughts with the community</p>
     </div>
 
-    <!-- FORM -->
-    <form class="modal-body" [formGroup]="form">
+    <form class="modal-body" [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Thread title</mat-label>
@@ -26,27 +24,26 @@
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Post</mat-label>
-        <textarea
-          matInput
-          rows="4"
-          formControlName="post"
+        <textarea matInput rows="4" formControlName="post"
           placeholder="Write your post...">
         </textarea>
       </mat-form-field>
 
-    </form>
+      <div class="modal-footer">
+        <button mat-button type="button" (click)="close.emit()">
+          Cancel
+        </button>
 
-    <!-- FOOTER -->
-    <div class="modal-footer">
-      <button mat-button (click)="close.emit()">Cancel</button>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="submit.emit()"
-        [disabled]="form.invalid">
-        Create
-      </button>
-    </div>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || isCreating">
+          Create
+        </button>
+      </div>
+
+    </form>
 
   </div>
 </div>

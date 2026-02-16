@@ -133,5 +133,21 @@ export class ThreadService {
     );
   }
 
+  createThread(title: string, categoryId: number) {
+    return this.http.post<any>(`${this.apiUrl}/thread`, { title, categoryId })
+      .pipe(
+        map(t => ({
+          id: t.threadId,
+          title: t.title,
+          userId: t.user_id,
+          username: t.username,
+          categoryId: t.category_id,
+          category: t.category,
+          createdAt: new Date(t.created_at),
+          postsCount: 0
+        }))
+      );
+  }
+
 
 }

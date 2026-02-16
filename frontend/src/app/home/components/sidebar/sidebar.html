@@ -35,12 +35,29 @@
       </button>
 
       <div class="topics-list" *ngIf="topicsOpen">
-        <button mat-button class="topic-item" *ngFor="let item of categories" [routerLink]="['/category', item.id]"
-          routerLinkActive="active">
+        <div class="topic-row" *ngFor="let item of categories">
 
-          <mat-icon>{{ item.icon }}</mat-icon>
-          {{ item.name }}
+          <button mat-button class="topic-item" [routerLink]="['/category', item.id]" routerLinkActive="active">
+
+            <mat-icon>{{ item.icon }}</mat-icon>
+            {{ item.name }}
+          </button>
+
+          <!-- ADMIN DELETE BUTTON -->
+          <button *ngIf="userRole === 'ADMIN'" mat-icon-button color="warn" class="delete-category-btn"
+            (click)="deleteCategory(item.id); $event.stopPropagation()">
+
+            <mat-icon>delete</mat-icon>
+          </button>
+
+        </div>
+
+        <!-- ADMIN ONLY BUTTON -->
+        <button *ngIf="userRole === 'ADMIN'" mat-stroked-button class="add-category-btn" (click)="addCategory.emit()">
+          <mat-icon>add</mat-icon>
+          Add Category
         </button>
+
       </div>
 
     </div>

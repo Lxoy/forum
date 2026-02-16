@@ -1,27 +1,29 @@
 const pool = require('../db');
 
 const postController = {
+
     getAllPostsByThreadId: async (req, res) => {
         try {
             const { id } = req.params;
 
             const { rows } = await pool.query(
                 `
-        SELECT 
-          p.id,
-          p.content,
-          p.user_id,
-          u.username,
-          p.created_at
-        FROM posts p
-        JOIN users u ON u.id = p.user_id
-        WHERE p.thread_id = $1
-        ORDER BY p.created_at ASC
-        `,
+                SELECT 
+                    p.id,
+                    p.content,
+                    p.user_id,
+                    u.username,
+                    p.created_at
+                FROM posts p
+                JOIN users u ON u.id = p.user_id
+                WHERE p.thread_id = $1
+                ORDER BY p.created_at ASC
+                `,
                 [id]
             );
 
             return res.status(200).json(rows);
+
         } catch (error) {
             console.error('Error fetching posts:', error);
             return res.status(500).json({ message: 'Server error' });
@@ -38,11 +40,17 @@ const postController = {
             }
 
             const result = await pool.query(
-                `INSERT INTO posts (content, thread_id, user_id) VALUES ($1, $2, $3) RETURNING id`,
+                `INSERT INTO posts (content, thread_id, user_id)
+                 VALUES ($1, $2, $3)
+                 RETURNING id`,
                 [content, threadId, userId]
             );
 
-            return res.status(201).json({ message: 'Post created successfully', postId: result.rows[0].id });
+            return res.status(201).json({
+                message: 'Post created successfully',
+                postId: result.rows[0].id
+            });
+
         } catch (error) {
             console.error('Error creating post:', error);
             return res.status(500).json({ message: 'Server error' });
@@ -52,6 +60,7 @@ const postController = {
     updatePost: async (req, res) => {
         const postId = req.params.id;
         const userIdFromToken = req.user.id;
+        const userRole = req.user.role;
         const { content } = req.body;
 
         try {
@@ -68,7 +77,9 @@ const postController = {
                 return res.status(404).json({ message: 'Post not found' });
             }
 
-            if (result.rows[0].user_id !== userIdFromToken) {
+            const postOwnerId = result.rows[0].user_id;
+
+            if (postOwnerId !== userIdFromToken && userRole !== 'ADMIN') {
                 return res.status(403).json({ message: 'Not authorized' });
             }
 
@@ -88,6 +99,7 @@ const postController = {
     deletePost: async (req, res) => {
         const postId = req.params.id;
         const userIdFromToken = req.user.id;
+        const userRole = req.user.role;
 
         try {
             const result = await pool.query(
@@ -99,7 +111,9 @@ const postController = {
                 return res.status(404).json({ message: 'Post not found' });
             }
 
-            if (result.rows[0].user_id !== userIdFromToken) {
+            const postOwnerId = result.rows[0].user_id;
+
+            if (postOwnerId !== userIdFromToken && userRole !== 'ADMIN') {
                 return res.status(403).json({ message: 'Not authorized' });
             }
 
@@ -114,7 +128,7 @@ const postController = {
             console.error(err);
             res.status(500).json({ message: 'Server error' });
         }
-    },
+    }
 };
 
 module.exports = postController;

@@ -132,3 +132,30 @@
   border-radius: 14px;
   font-weight: 600;
 }
+
+.add-category-btn {
+  width: 100%;
+  margin-top: 8px;
+  border-radius: 10px;
+  color: #3f51b5;
+  border: 1px solid rgba(63, 81, 181, 0.4);
+}
+
+.add-category-btn mat-icon {
+  margin-right: 6px;
+}
+
+.topic-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete-category-btn {
+  opacity: 0.6;
+}
+
+.delete-category-btn:hover {
+  opacity: 1;
+}
+

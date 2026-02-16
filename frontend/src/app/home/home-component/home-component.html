@@ -2,7 +2,10 @@
 
   <app-sidebar
     [categories]="categories"
-    (newThread)="showNewThreadMenu()">
+    [userRole]="user?.role"
+    (newThread)="showNewThreadMenu()"
+    (addCategory)="openCreateCategory()"
+    (deleteCategoryEvent)="deleteCategory($event)">
   </app-sidebar>
 
   <main class="content">
@@ -11,10 +14,19 @@
 
 </div>
 
+<!-- NEW THREAD -->
 <app-new-discussion-menu
   *ngIf="isNewThread"
   [form]="newThreadForm"
   [categories]="categories"
+  [isCreating]="isCreating"
   (close)="closeNewThread()"
   (submit)="createThread()">
 </app-new-discussion-menu>
+
+<!-- CREATE CATEGORY -->
+<app-create-category
+  *ngIf="isCreateCategory"
+  (close)="closeCreateCategory()"
+  (created)="handleCategoryCreated()">
+</app-create-category>

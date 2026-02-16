@@ -32,6 +32,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Profile } from './home/pages/profile/profile';
 import { Pagination } from './home/components/pagination/pagination';
 import { AuthInterceptor } from './home/core/auth.interceptor';
+import { CreateCategory } from './home/components/create-category/create-category';
+import { MatDialogActions, MatDialogContent } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -50,13 +52,13 @@ import { AuthInterceptor } from './home/core/auth.interceptor';
     Rules,
     About,
     Profile,
+    CreateCategory,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -69,8 +71,10 @@ import { AuthInterceptor } from './home/core/auth.interceptor';
     MatExpansionModule,
     MatListModule,
     MatSelectModule,
-    MatChipsModule
-  ],
+    MatChipsModule,
+    MatDialogActions,
+    MatDialogContent
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     {
