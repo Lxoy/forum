@@ -4,8 +4,6 @@
   padding: 60px 20px;
 }
 
-/* HERO */
-
 .rules-hero {
   text-align: center;
   margin-bottom: 60px;
@@ -25,15 +23,11 @@
   line-height: 1.6;
 }
 
-/* CARD */
-
 .rules-card {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
-/* RULE ITEM */
 
 .rule {
   display: flex;
@@ -75,8 +69,6 @@
   font-size: 14px;
   line-height: 1.6;
 }
-
-/* FOOTER */
 
 .footer-note {
   text-align: center;

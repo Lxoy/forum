@@ -1,11 +1,9 @@
 <aside class="sidebar">
 
-  <!-- HEADER -->
   <div class="sidebar-header">
     <h2 class="logo">YapYap</h2>
   </div>
 
-  <!-- NAV -->
   <nav class="sidebar-nav">
 
     <button mat-button class="nav-item" routerLink="popular" routerLinkActive="active">
@@ -20,7 +18,6 @@
 
     <mat-divider></mat-divider>
 
-    <!-- TOPICS -->
     <div class="topics-section">
 
       <button class="topics-toggle" (click)="toggleTopics()">
@@ -43,7 +40,6 @@
             {{ item.name }}
           </button>
 
-          <!-- ADMIN DELETE BUTTON -->
           <button *ngIf="userRole === 'ADMIN'" mat-icon-button color="warn" class="delete-category-btn"
             (click)="deleteCategory(item.id); $event.stopPropagation()">
 
@@ -52,7 +48,6 @@
 
         </div>
 
-        <!-- ADMIN ONLY BUTTON -->
         <button *ngIf="userRole === 'ADMIN'" mat-stroked-button class="add-category-btn" (click)="addCategory.emit()">
           <mat-icon>add</mat-icon>
           Add Category
@@ -81,7 +76,6 @@
 
   </nav>
 
-  <!-- FOOTER -->
   <div class="sidebar-footer">
     <button mat-raised-button color="primary" class="new-topic-btn" (click)="newThread.emit()">
       <mat-icon>add</mat-icon>

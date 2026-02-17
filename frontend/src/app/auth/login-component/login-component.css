@@ -47,13 +47,11 @@
   overflow: hidden;
 }
 
-/* blagi hover efekt */
 .logo-box:hover {
   transform: scale(1.15);
   box-shadow: 0 15px 35px rgba(63, 81, 181, 0.4);
 }
 
-/* optional: mala svjetlosna animacija */
 .logo-box::after {
   content: "";
   position: absolute;

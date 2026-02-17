@@ -14,7 +14,6 @@
 
 </div>
 
-<!-- NEW THREAD -->
 <app-new-discussion-menu
   *ngIf="isNewThread"
   [form]="newThreadForm"
@@ -24,7 +23,6 @@
   (submit)="createThread()">
 </app-new-discussion-menu>
 
-<!-- CREATE CATEGORY -->
 <app-create-category
   *ngIf="isCreateCategory"
   (close)="closeCreateCategory()"

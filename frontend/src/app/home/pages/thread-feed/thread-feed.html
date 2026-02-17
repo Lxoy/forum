@@ -1,23 +1,15 @@
 <section class="thread-feed">
 
-    <!-- NO THREADS MESSAGE -->
   <div *ngIf="threads.length === 0" class="no-threads">
-  <h3>It's quiet here...</h3>
-  <p>No one has started yapping yet. Why not kick things off?</p>
-</div>
+    <h3>It's quiet here...</h3>
+    <p>No one has started yapping yet. Why not kick things off?</p>
+  </div>
 
-  <!-- THREADS -->
-  <app-thread-list
-    [threads]="visibleThreads">
+  <app-thread-list [threads]="visibleThreads">
   </app-thread-list>
 
-  <!-- PAGINATION -->
-  <app-pagination
-    *ngIf="threads.length > pageSize"
-    [totalItems]="threads.length"
-    [pageSize]="pageSize"
-    [currentPage]="currentPage"
-    (pageChange)="onPageChange($event)">
+  <app-pagination *ngIf="threads.length > pageSize" [totalItems]="threads.length" [pageSize]="pageSize"
+    [currentPage]="currentPage" (pageChange)="onPageChange($event)">
   </app-pagination>
 
 </section>

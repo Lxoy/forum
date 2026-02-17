@@ -1,4 +1,3 @@
-/* Overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -9,7 +8,6 @@
   z-index: 100;
 }
 
-/* Modal box */
 .modal {
   width: 440px;
   background: #fff;
@@ -20,7 +18,6 @@
   animation: scaleIn 0.15s ease-out;
 }
 
-/* Header */
 .modal-header {
   padding: 24px 24px 12px;
   border-bottom: 1px solid #eee;
@@ -38,7 +35,6 @@
   color: #777;
 }
 
-/* Body */
 .modal-body {
   padding: 16px 24px;
   display: flex;
@@ -50,7 +46,6 @@
   width: 100%;
 }
 
-/* Footer */
 .modal-footer {
   padding: 16px 24px;
   display: flex;
@@ -59,7 +54,6 @@
   border-top: 1px solid #eee;
 }
 
-/* Animation */
 @keyframes scaleIn {
   from {
     opacity: 0;
