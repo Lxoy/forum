@@ -41,7 +41,6 @@ export class Profile {
       }
     });
 
-    // Kad korisnik krene tipkati – briši error
     this.profileForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
       this.successMessage = '';
@@ -74,8 +73,8 @@ export class Profile {
 
     this.userService.updateProfile(username, email)
       .subscribe({
-        next: (updatedUser) => {
-          this.user = updatedUser;
+        next: () => {
+
           this.editMode = false;
           this.successMessage = 'Profile updated successfully.';
           this.isSaving = false;

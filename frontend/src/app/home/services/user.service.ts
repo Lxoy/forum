@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../model/user.model';
 import { AuthService } from '../../auth/auth.service';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -42,8 +43,13 @@ export class UserService {
   }
 
   updateProfile(username: string, email: string) {
-    return this.http.put<User>(this.API_URL, { username, email });
-  }
+  return this.http.put<User>(this.API_URL, { username, email })
+    .pipe(
+      tap(updatedUser => {
+        this.currentUser$.next(updatedUser);
+      })
+    );
+}
 
   logout() {
     this.authService.logout();
