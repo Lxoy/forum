@@ -1,4 +1,8 @@
+/* Za napraviti bazu */
 CREATE DATABASE forum;
+
+/* ili pomocu GUI-a */
+
 
 CREATE TYPE user_role AS ENUM ('USER', 'ADMIN');
 
