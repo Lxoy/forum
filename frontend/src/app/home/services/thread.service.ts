@@ -11,26 +11,21 @@ export class ThreadService {
 
   private threads$ = new BehaviorSubject<Thread[]>([]);
   private selectedCategory$ = new BehaviorSubject<string | null>(null);
-
   private threadSubject = new BehaviorSubject<Thread | null>(null);
 
   constructor(private http: HttpClient) { }
 
-  getThreads() {
-    return this.threads$.asObservable();
+  getThread(): Observable<Thread | null> {
+    return this.threadSubject.asObservable();
   }
 
-  setCategory(category: string | null) {
-    this.selectedCategory$.next(category);
-  }
-
-  getCategory() {
-    return this.selectedCategory$.asObservable();
-  }
+  getThreads(): Observable<Thread[]> {
+  return this.threads$.asObservable();
+}
 
   fetchExplore(): void {
     this.http
-      .get<any[]>(`${this.apiUrl}/thread`)
+      .get<any[]>(`${this.apiUrl}/threads`)
       .pipe(
         map(data =>
           data.map(t => ({
@@ -50,11 +45,10 @@ export class ThreadService {
         error: err => console.error(err)
       });
   }
-
 
   fetchPopular() {
     this.http
-      .get<any[]>(`${this.apiUrl}/popular`)
+      .get<any[]>(`${this.apiUrl}/threads/popular`)
       .pipe(
         map(data =>
           data.map(t => ({
@@ -75,9 +69,9 @@ export class ThreadService {
       });
   }
 
-  fetchByCategory(category: number) {
+  fetchByCategory(categoryId: number) {
     this.http
-      .get<any[]>(`${this.apiUrl}/category/${category}`)
+      .get<any[]>(`${this.apiUrl}/categories/${categoryId}/threads`)
       .pipe(
         map(data =>
           data.map(t => ({
@@ -100,7 +94,7 @@ export class ThreadService {
 
   fetchThread(threadId: number) {
     this.threadSubject.next(null);
-    this.http.get<any>(`${this.apiUrl}/thread/${threadId}`)
+    this.http.get<any>(`${this.apiUrl}/threads/${threadId}`)
       .pipe(
         map(t => ({
           id: t.id,
@@ -116,38 +110,18 @@ export class ThreadService {
       .subscribe(thread => this.threadSubject.next(thread));
   }
 
-
-
-  getThread(): Observable<Thread | null> {
-    return this.threadSubject.asObservable();
-  }
-
   deleteThread(threadId: number) {
-    return this.http.delete(`${this.apiUrl}/thread/${threadId}`);
+    return this.http.delete(`${this.apiUrl}/threads/${threadId}`);
   }
 
   updateTitle(threadId: number, title: string) {
     return this.http.put(
-      `${this.apiUrl}/thread/${threadId}`,
+      `${this.apiUrl}/threads/${threadId}`,
       { title }
     );
   }
 
   createThread(title: string, categoryId: number) {
-    return this.http.post<any>(`${this.apiUrl}/thread`, { title, categoryId })
-      .pipe(
-        map(t => ({
-          id: t.threadId,
-          title: t.title,
-          userId: t.user_id,
-          username: t.username,
-          categoryId: t.category_id,
-          category: t.category,
-          createdAt: new Date(t.created_at),
-          postsCount: 0
-        }))
-      );
+    return this.http.post<any>(`${this.apiUrl}/threads`, { title, categoryId });
   }
-
-
 }

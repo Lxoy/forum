@@ -20,7 +20,7 @@ export class PostService {
 
   fetchByThread(threadId: number): void {
     this.http
-      .get<any[]>(`${this.apiUrl}/thread/${threadId}/posts`)
+      .get<any[]>(`${this.apiUrl}/threads/${threadId}/posts`)
       .pipe(
         map(data =>
           data.map(p => ({
@@ -39,29 +39,29 @@ export class PostService {
   }
 
   createPost(threadId: number, content: string) {
-  return this.http
-    .post<any>(`${this.apiUrl}/post`, { threadId, content })
-    .pipe(
-      map(p => ({
-        id: p.id,
-        content: p.content,
-        userId: p.user_id,
-        username: p.username,
-        createdAt: new Date(p.created_at)
-      }))
-    );
-}
+    return this.http
+      .post<any>(`${this.apiUrl}/threads/${threadId}/posts`, { content })
+      .pipe(
+        map(p => ({
+          id: p.id,
+          content: p.content,
+          userId: p.user_id,
+          username: p.username,
+          createdAt: new Date(p.created_at)
+        }))
+      );
+  }
 
   updatePost(postId: number, content: string) {
     return this.http.put(
-      `${this.apiUrl}/post/${postId}`,
+      `${this.apiUrl}/posts/${postId}`,
       { content }
     );
   }
 
   deletePost(postId: number) {
     return this.http.delete(
-      `${this.apiUrl}/post/${postId}`
+      `${this.apiUrl}/posts/${postId}`
     );
   }
 

@@ -4,7 +4,7 @@ const postController = {
 
     getAllPostsByThreadId: async (req, res) => {
         try {
-            const { id } = req.params;
+           const { threadId } = req.params;
 
             const { rows } = await pool.query(
                 `
@@ -19,7 +19,7 @@ const postController = {
                 WHERE p.thread_id = $1
                 ORDER BY p.created_at ASC
                 `,
-                [id]
+                [threadId]
             );
 
             return res.status(200).json(rows);
@@ -32,10 +32,11 @@ const postController = {
 
     createPost: async (req, res) => {
         try {
-            const { content, threadId } = req.body;
+            const { content } = req.body;
+            const threadId = req.params.threadId;
             const userId = req.user.id;
 
-            if (!content || !threadId) {
+            if (!content) {
                 return res.status(400).json({ message: 'Missing fields' });
             }
 

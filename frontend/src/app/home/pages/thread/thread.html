@@ -12,15 +12,20 @@
         </span>
       </div>
 
-      <div class="actions" *ngIf="canDeleteThread() && !isEditing">
-        <button mat-icon-button (click)="startEdit()">
+      <div class="actions" *ngIf="!isEditing">
+
+        <!-- EDIT only if owner -->
+        <button *ngIf="isOwner" mat-icon-button (click)="startEdit()">
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="warn" (click)="deleteThread()">
+        <!-- DELETE if owner OR admin -->
+        <button *ngIf="canDeleteThread()" mat-icon-button color="warn" (click)="deleteThread()">
           <mat-icon>delete</mat-icon>
         </button>
+
       </div>
+
 
     </div>
 
@@ -76,14 +81,18 @@
           </span>
         </div>
 
-        <div class="post-actions" *ngIf="canDeletePost(post.userId)">
-          <button mat-icon-button (click)="startPostEdit(post)">
+        <div class="post-actions">
+
+          <!-- EDIT only if post owner -->
+          <button *ngIf="post.userId === currentUserId" mat-icon-button (click)="startPostEdit(post)">
             <mat-icon>edit</mat-icon>
           </button>
 
-          <button mat-icon-button color="warn" (click)="deletePost(post.id)">
+          <!-- DELETE if owner OR admin -->
+          <button *ngIf="canDeletePost(post.userId)" mat-icon-button color="warn" (click)="deletePost(post.id)">
             <mat-icon>delete</mat-icon>
           </button>
+
         </div>
       </div>
 
@@ -117,20 +126,12 @@
   </div>
 
   <!-- ADD COMMENT BAR -->
-<div class="add-comment">
-  <textarea
-    [(ngModel)]="newPostContent"
-    placeholder="Write your reply..."
-  ></textarea>
+  <div class="add-comment">
+    <textarea [(ngModel)]="newPostContent" placeholder="Write your reply..."></textarea>
 
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="createPost()"
-    [disabled]="!newPostContent.trim()"
-  >
-    Post
-  </button>
-</div>
+    <button mat-raised-button color="primary" (click)="createPost()" [disabled]="!newPostContent.trim()">
+      Post
+    </button>
+  </div>
 
 </div>

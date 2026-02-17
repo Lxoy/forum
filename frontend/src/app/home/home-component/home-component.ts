@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (newThread) => {
 
-          const threadId = newThread.id;
+          const threadId = newThread.threadId;
 
           this.postService.createPost(threadId, post)
             .subscribe({

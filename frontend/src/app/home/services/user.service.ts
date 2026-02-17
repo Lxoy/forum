@@ -8,7 +8,7 @@ import { AuthService } from '../../auth/auth.service';
   providedIn: 'root',
 })
 export class UserService {
-  private API_URL = 'http://localhost:3000/api/home/me';
+  private API_URL = 'http://localhost:3000/api/home/users/me';
   private currentUser$ = new BehaviorSubject<User | null>(null);
 
   constructor(private http: HttpClient, private authService: AuthService) {
@@ -41,13 +41,13 @@ export class UserService {
     return this.currentUser$.value?.role || null;
   }
 
+  updateProfile(username: string, email: string) {
+    return this.http.put<User>(this.API_URL, { username, email });
+  }
+
   logout() {
     this.authService.logout();
     this.currentUser$.next(null);
-  }
-
-  updateProfile(username: string, email: string): Observable<User> {
-    return this.http.put<User>(this.API_URL, { username, email });
   }
 
 }
